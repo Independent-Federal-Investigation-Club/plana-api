@@ -1,14 +1,13 @@
 from datetime import datetime, timezone
 from functools import wraps
-from typing import Any, Dict, List, Optional, Type, TypeVar, Annotated
+from typing import Annotated, Any, Dict, List, Optional, Type, TypeVar
 
 from loguru import logger
+from pydantic import BaseModel, BeforeValidator
 from sqlalchemy import and_, func, select
-from sqlalchemy.sql import ColumnElement
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import selectinload
-
-from pydantic import BaseModel, Field
+from sqlalchemy.sql import ColumnElement
 
 from plana.database.utils.db import PlanaDB
 
@@ -21,11 +20,13 @@ def snowflake_validator(v: Optional[str]) -> Optional[int]:
         return None
     if isinstance(v, str) and v.isdigit():
         return int(v)
+    if isinstance(v, int):
+        return v
     return v
 
 
-# Custom type for snowflake IDs with validator
-SnowflakeId = Annotated[Optional[int], Field(), snowflake_validator]
+# Use BeforeValidator to actually apply the validator
+SnowflakeId = Annotated[Optional[int], BeforeValidator(snowflake_validator)]
 
 
 class PlanaModel(BaseModel):

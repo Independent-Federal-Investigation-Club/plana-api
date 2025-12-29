@@ -1,9 +1,8 @@
-from fastapi import APIRouter, HTTPException, UploadFile, File, Path
+from fastapi import APIRouter, File, HTTPException, Path, UploadFile
 from fastapi.responses import JSONResponse
-from plana.api.utils.s3 import S3
-
 from loguru import logger
 
+from plana.api.utils.s3 import S3
 
 # Initialize router
 router = APIRouter()

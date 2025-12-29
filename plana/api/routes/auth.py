@@ -1,19 +1,17 @@
 import os
 import secrets
+import traceback
 from typing import Any, Dict, List, Optional
 from urllib.parse import urlencode
 
-import traceback
-
-from loguru import logger
-from fastapi import APIRouter, Depends, HTTPException, status, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from fastapi.responses import HTMLResponse
+from loguru import logger
 from pydantic import BaseModel, Field
 
 from plana.api.auth.oauth import discord_oauth
+from plana.api.middleware.types import AuthConstants, AuthData
 from plana.api.middleware.utils import get_current_user
-from plana.api.middleware.types import AuthData, AuthConstants
-
 from plana.database import GuildPreferences
 
 router = APIRouter()

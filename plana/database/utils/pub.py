@@ -1,10 +1,9 @@
 import os
+from datetime import datetime, timezone
 from enum import Enum
 from typing import Optional
-from datetime import datetime, timezone
 
 import redis.asyncio as aioredis
-
 from loguru import logger
 from pydantic import BaseModel, Field
 

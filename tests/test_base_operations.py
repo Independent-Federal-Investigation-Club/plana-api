@@ -4,15 +4,14 @@ Comprehensive test script for PlanaBaseModel operations using GuildPreferences.
 This script demonstrates all available operations in the base model.
 """
 
-import os
 import asyncio
+import os
+
+from dotenv import load_dotenv
+from sqlalchemy import or_
 
 from plana.database.models.guild import GuildPreferences
 from plana.database.utils.db import PlanaDB
-
-from sqlalchemy import or_
-
-from dotenv import load_dotenv
 
 
 class TestBaseOperations:

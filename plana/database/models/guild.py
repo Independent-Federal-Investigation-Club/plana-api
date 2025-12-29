@@ -1,7 +1,7 @@
-from typing import Dict, Optional, List
+from typing import Dict, List, Optional
 
 from pydantic import Field, field_validator
-from sqlalchemy import BigInteger, Column, String, Boolean, ARRAY
+from sqlalchemy import ARRAY, BigInteger, Boolean, Column, String
 
 from plana.database.models.base import PlanaDBModel, PlanaModel, SnowflakeId
 

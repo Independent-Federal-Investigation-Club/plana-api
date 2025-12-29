@@ -1,14 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException, Path, Request
 
 from plana.api.middleware.utils import require_permission
+from plana.api.utils.handler import handle_guild_config_refresh, raise_404_if_not_found
 from plana.api.utils.helper import (
     _handle_database_error,
     ids_string_to_int,
 )
-from plana.api.utils.handler import handle_guild_config_refresh
-from plana.api.utils.handler import raise_404_if_not_found
 from plana.database.models.levels import LevelSetting, LevelSettings
-
 
 router = APIRouter()
 

@@ -1,15 +1,15 @@
 from typing import Optional
-from loguru import logger
+
 from fastapi import APIRouter, Depends, HTTPException, Path, Query, Request
+from loguru import logger
 
 from plana.api.middleware.utils import bot_only_operation
+from plana.api.utils.handler import raise_404_if_not_found
 from plana.api.utils.helper import (
     _handle_database_error,
     ids_string_to_int,
 )
-from plana.api.utils.handler import raise_404_if_not_found
-from plana.database.models.message import Messages, Message
-
+from plana.database.models.message import Message, Messages
 
 MESSAGE_ROUTER = APIRouter()
 

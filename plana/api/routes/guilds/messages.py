@@ -1,18 +1,18 @@
 from typing import Optional
-from loguru import logger
+
 from fastapi import APIRouter, Depends, HTTPException, Path, Query
+from loguru import logger
 
 from plana.api.middleware.utils import require_permission
-from plana.api.utils.helper import (
-    _handle_database_error,
-    ids_string_to_int,
-)
 from plana.api.utils.handler import (
     manage_message_state_change,
     raise_404_if_not_found,
 )
-from plana.database.models.message import Messages, Message
-
+from plana.api.utils.helper import (
+    _handle_database_error,
+    ids_string_to_int,
+)
+from plana.database.models.message import Message, Messages
 
 router = APIRouter()
 

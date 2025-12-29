@@ -14,16 +14,16 @@ This package organizes guild-related routes into separate modules by functionali
 from fastapi import APIRouter
 
 from . import (
-    core,
-    preferences,
-    messages,
-    react_roles,
-    welcome,
-    levels,
-    users,
-    rss,
-    images,
     ai,
+    core,
+    images,
+    levels,
+    messages,
+    preferences,
+    react_roles,
+    rss,
+    users,
+    welcome,
 )
 
 # Create the main guild router

@@ -1,13 +1,14 @@
-from typing import Union, Optional
+from typing import Optional, Union
 
 from fastapi import HTTPException, status
-from plana.database.utils.pub import (
-    PlanaEvents,
-    PUB,
-    GuildConfigEventData,
-    EventPayload,
-)
+
 from plana.database.models.message import Message, Messages, PlanaDBModel
+from plana.database.utils.pub import (
+    PUB,
+    EventPayload,
+    GuildConfigEventData,
+    PlanaEvents,
+)
 
 
 def raise_404_if_not_found(item: "PlanaDBModel"):

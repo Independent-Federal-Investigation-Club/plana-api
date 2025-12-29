@@ -1,12 +1,11 @@
 import os
 import traceback
-
-from loguru import logger
-from dotenv import load_dotenv
+from typing import Any, Dict, Optional
 
 import httpx
-from typing import Any, Dict, Optional
+from dotenv import load_dotenv
 from fastapi import HTTPException, status
+from loguru import logger
 
 
 def validate_environment() -> None:

@@ -9,14 +9,15 @@ Follows the Zen of Python: Simple is better than complex.
 """
 
 import re
-from typing import Set, Optional
-from loguru import logger
+from typing import Optional, Set
+
 from fastapi import Request, status
 from fastapi.responses import JSONResponse
+from loguru import logger
 from starlette.middleware.base import BaseHTTPMiddleware
 
 from plana.api.auth.oauth import discord_oauth
-from plana.api.middleware.types import AuthType, AuthConstants, AuthData
+from plana.api.middleware.types import AuthConstants, AuthData, AuthType
 
 
 class AuthMiddleware(BaseHTTPMiddleware):
