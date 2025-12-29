@@ -1,18 +1,17 @@
+from datetime import datetime
 from typing import Optional
-from pydantic import Field
 
+from pydantic import Field
 from sqlalchemy import (
     BigInteger,
-    Column,
     Boolean,
-    String,
+    Column,
     DateTime,
+    String,
 )
 
-
-from datetime import datetime
-from plana.database.utils.helper import SNOWFLAKE_GEN
 from plana.database.models.base import PlanaDBModel, PlanaModel, SnowflakeId
+from plana.database.utils.helper import SNOWFLAKE_GEN
 
 
 class RssFeed(PlanaModel):

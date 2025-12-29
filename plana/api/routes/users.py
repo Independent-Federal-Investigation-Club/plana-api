@@ -1,4 +1,5 @@
 from typing import List
+
 from fastapi import APIRouter, Depends, HTTPException
 
 from plana.api.middleware.utils import bot_only_operation
@@ -6,7 +7,6 @@ from plana.api.utils.helper import (
     _handle_database_error,
 )
 from plana.database.models.user import User, Users
-
 
 USER_ROUTER = APIRouter()
 

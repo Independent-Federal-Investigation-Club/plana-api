@@ -4,19 +4,17 @@ from contextlib import asynccontextmanager
 from typing import List
 
 import uvicorn
-from loguru import logger
-
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from loguru import logger
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from plana.api.utils.helper import validate_environment
-
+from plana.api.middleware.auth import AuthMiddleware
 from plana.api.routes import auth, messages, users
 from plana.api.routes.guilds import GUILD_ROUTER
-from plana.api.middleware.auth import AuthMiddleware
+from plana.api.utils.helper import validate_environment
 
 
 def setup_logging(debug: bool = False) -> None:

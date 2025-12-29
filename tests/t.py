@@ -1,10 +1,9 @@
-import os
 import asyncio
+import os
+
 from dotenv import load_dotenv
 
 from plana.database import PlanaDB
-
-
 from plana.database.models.message import Messages
 
 

@@ -1,9 +1,9 @@
-from typing import Any, Optional, List, Sequence
+from typing import Any, List, Optional, Sequence
 
 from pydantic import Field
-from sqlalchemy import BigInteger, Column, String, Boolean, Integer, ARRAY, Float
+from sqlalchemy import ARRAY, BigInteger, Boolean, Column, Float, Integer, String
 
-from .base import PlanaModel, PlanaDBModel, SnowflakeId
+from .base import PlanaDBModel, PlanaModel, SnowflakeId
 
 
 class AISetting(PlanaModel):

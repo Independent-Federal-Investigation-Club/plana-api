@@ -1,9 +1,12 @@
 from datetime import datetime, timezone
 from typing import List, Optional
+
 from pydantic import Field, field_validator
-from sqlalchemy import BigInteger, Column, Boolean, JSON, DateTime
+from sqlalchemy import JSON, BigInteger, Boolean, Column, DateTime
 from sqlalchemy.sql import func
+
 from plana.database.models.base import PlanaDBModel, PlanaModel, SnowflakeId
+
 from .message import Message
 
 

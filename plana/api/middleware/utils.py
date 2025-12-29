@@ -6,11 +6,12 @@ Following the Zen of Python: Simple is better than complex.
 
 import time
 from typing import Dict, Tuple
+
 from fastapi import Request
 from loguru import logger
 
 from plana.api.auth.oauth import discord_oauth
-from plana.api.middleware.types import AuthConstants, AuthType, AuthData
+from plana.api.middleware.types import AuthConstants, AuthData, AuthType
 
 # Permission cache: {(user_id, guild_id): (has_permission, timestamp)} avoid rate limiting Discord API
 _permission_cache: Dict[Tuple[str, str], Tuple[bool, float]] = {}

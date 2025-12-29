@@ -1,10 +1,11 @@
+from datetime import datetime, timezone
 from typing import Optional
-from sqlalchemy import BigInteger, Column, JSON, DateTime
+
+from pydantic import Field
+from sqlalchemy import JSON, BigInteger, Column, DateTime
 
 from plana.database.models.base import PlanaDBModel, PlanaModel, SnowflakeId
 from plana.database.utils.helper import SNOWFLAKE_GEN
-from pydantic import Field
-from datetime import datetime, timezone
 
 
 class User(PlanaModel):

@@ -1,18 +1,19 @@
-from typing import List, Optional
 from datetime import datetime, timezone
-from sqlalchemy import (
-    BigInteger,
-    Column,
-    String,
-    JSON,
-    Boolean,
-    ARRAY,
-    DateTime,
-)
+from typing import List, Optional
 
 from pydantic import Field
-from plana.database.utils.helper import SNOWFLAKE_GEN
+from sqlalchemy import (
+    ARRAY,
+    JSON,
+    BigInteger,
+    Boolean,
+    Column,
+    DateTime,
+    String,
+)
+
 from plana.database.models.base import PlanaDBModel, PlanaModel, SnowflakeId
+from plana.database.utils.helper import SNOWFLAKE_GEN
 
 
 class RoleAssignment(PlanaModel):

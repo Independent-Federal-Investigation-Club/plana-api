@@ -1,9 +1,10 @@
 # Copy from the Plana-API Database models
 
-from typing import Optional, List
-from pydantic import Field
+from typing import List, Optional
 
-from sqlalchemy import BigInteger, Column, String, ARRAY, JSON, Integer
+from pydantic import Field
+from sqlalchemy import ARRAY, JSON, BigInteger, Column, Integer, String
+
 from plana.database.models.base import PlanaDBModel, PlanaModel, SnowflakeId
 
 
