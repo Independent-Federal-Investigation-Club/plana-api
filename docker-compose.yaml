@@ -1,0 +1,140 @@
+networks:
+  plana-network:
+    driver: bridge
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: plana-postgres
+    environment:
+      POSTGRES_DB: ${PLANA_DB_NAME}
+      POSTGRES_USER: ${PLANA_USER}
+      POSTGRES_PASSWORD: ${PLANA_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - plana-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${PLANA_USER} -d ${PLANA_DB_NAME}"]
+      interval: 2s
+      timeout: 120s
+      retries: 60
+
+  redis:
+    image: redis:8-alpine
+    container_name: plana-redis
+    command: redis-server --requirepass ${PLANA_PASSWORD}
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - plana-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${PLANA_PASSWORD}", "ping"]
+      interval: 2s
+      timeout: 120s
+      retries: 60
+# only enable if you want to use internal s3 instance for testing
+  # minio:
+  #   image: minio/minio:latest
+  #   container_name: plana-minio
+  #   environment:
+  #     MINIO_ROOT_USER: ${PLANA_USER}
+  #     MINIO_ROOT_PASSWORD: ${PLANA_PASSWORD}
+  #   ports:
+  #     - "9000:9000"
+  #     - "9001:9001"
+  #   volumes:
+  #     - minio_data:/data
+  #   networks:
+  #     - plana-network
+  #   command: server /data --console-address ":9001"
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+  #     interval: 2s
+  #     timeout: 120s
+  #     retries: 60
+
+  # minio-init:
+  #   image: minio/mc:latest
+  #   container_name: plana-minio-init
+  #   depends_on:
+  #     minio:
+  #       condition: service_healthy
+  #   environment:
+  #     MINIO_ROOT_USER: ${PLANA_USER}
+  #     MINIO_ROOT_PASSWORD: ${PLANA_PASSWORD}
+  #     PLANA_DB_NAME: ${PLANA_DB_NAME}
+  #   networks:
+  #     - plana-network
+  #   entrypoint: >
+  #     /bin/sh -c "
+  #     echo 'Setting up MinIO alias...';
+  #     until /usr/bin/mc alias set myminio http://minio:9000 ${PLANA_USER} ${PLANA_PASSWORD}; do
+  #       echo 'Waiting for MinIO to be ready...';
+  #       sleep 5;
+  #     done;
+      
+  #     echo 'Creating bucket...';
+  #     /usr/bin/mc mb myminio/${PLANA_DB_NAME} --ignore-existing;
+      
+  #     echo 'Setting bucket policy to public read...';
+  #     /usr/bin/mc anonymous set public myminio/${PLANA_DB_NAME};
+  #     echo 'MinIO initialization completed successfully';
+  #     "
+
+  plana-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: plana-api
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      # minio:
+      #   condition: service_healthy
+      # minio-init:
+      #   condition: service_completed_successfully
+    ports:
+      - "8000:8000"
+    volumes:
+      - plana_data:/app
+    environment:
+      # Database configuration
+      PLANA_DB_NAME: ${PLANA_DB_NAME}
+      PLANA_USER: ${PLANA_USER}
+      PLANA_PASSWORD: ${PLANA_PASSWORD}
+      DISCORD_CLIENT_ID: ${DISCORD_CLIENT_ID}
+      DISCORD_CLIENT_SECRET: ${DISCORD_CLIENT_SECRET}
+      DISCORD_REDIRECT_URI: ${DISCORD_REDIRECT_URI}
+      DATABASE_URL: ${DATABASE_URL}
+      REDIS_URL: ${REDIS_URL}
+      JWT_SECRET: ${JWT_SECRET}
+      PLANA_API_KEYS: ${PLANA_API_KEYS}
+      FRONTEND_REDIRECT_URI: ${FRONTEND_REDIRECT_URI}
+      S3_ACCESS_KEY_ID: ${S3_ACCESS_KEY_ID}
+      S3_SECRET_ACCESS_KEY: ${S3_SECRET_ACCESS_KEY}
+      S3_ENDPOINT_URL: ${S3_ENDPOINT_URL}
+      S3_REGION: ${S3_REGION}
+      S3_BUCKET_NAME: ${S3_BUCKET_NAME}
+      S3_USE_SSL: ${S3_USE_SSL}
+      API_HOST: ${API_HOST}
+      API_PORT: ${API_PORT}
+      API_RELOAD: ${API_RELOAD}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS}
+    networks:
+      - plana-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 2s
+      timeout: 120s
+      retries: 60
+
+volumes:
+  postgres_data:
+  redis_data:
+  # minio_data:
+  plana_data:
