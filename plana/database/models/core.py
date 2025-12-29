@@ -34,9 +34,7 @@ class GuildEmoji(PlanaModel):
     Pydantic Model for Discord Guild Emoji Data
     """
 
-    emoji_id: Optional[SnowflakeId] = Field(
-        default=None, description="Discord Emoji ID"
-    )
+    emoji_id: Optional[SnowflakeId] = Field(default=None, description="Discord Emoji ID")
     name: str = Field(..., max_length=100, description="Name of the emoji")
     url: Optional[str] = Field(
         None, max_length=256, description="URL of the emoji [for emoji uploads]"
@@ -55,9 +53,7 @@ class GuildSticker(PlanaModel):
     description: Optional[str] = Field(
         None, max_length=512, description="Description of the sticker"
     )
-    emoji: str = Field(
-        ..., max_length=100, description="Emoji representation of the sticker"
-    )
+    emoji: str = Field(..., max_length=100, description="Emoji representation of the sticker")
 
     format: int = Field(
         ...,
@@ -72,8 +68,8 @@ class TextChannel(PlanaModel):
     """
 
     channel_id: SnowflakeId = Field(..., description="Discord Channel ID")
-    category_id: SnowflakeId = Field(
-        ..., description="ID of the category this channel belongs to"
+    category_id: Optional[SnowflakeId] = Field(
+        default=None, description="ID of the category this channel belongs to"
     )
     name: str = Field(..., max_length=100, description="Name of the channel")
     position: int = Field(0, description="Position of the channel in the list")
@@ -111,12 +107,8 @@ class Guild(PlanaModel):
         0, description="Number of premium subscriptions"
     )
 
-    users: List[GuildUser] = Field(
-        default_factory=list, description="List of users in the guild"
-    )
-    roles: List[GuildRole] = Field(
-        default_factory=list, description="List of roles in the guild"
-    )
+    users: List[GuildUser] = Field(default_factory=list, description="List of users in the guild")
+    roles: List[GuildRole] = Field(default_factory=list, description="List of roles in the guild")
     emojis: List[GuildEmoji] = Field(
         default_factory=list, description="List of emojis in the guild"
     )

@@ -15,15 +15,17 @@ from plana.database.utils.db import PlanaDB
 T = TypeVar("T", bound="PlanaDBModel")
 
 
-def snowflake_validator(v):
+def snowflake_validator(v: Optional[str]) -> Optional[int]:
     """Validator function for snowflake ID fields"""
+    if v is None:
+        return None
     if isinstance(v, str) and v.isdigit():
         return int(v)
     return v
 
 
 # Custom type for snowflake IDs with validator
-SnowflakeId = Annotated[int, Field(), snowflake_validator]
+SnowflakeId = Annotated[Optional[int], Field(), snowflake_validator]
 
 
 class PlanaModel(BaseModel):
@@ -42,9 +44,7 @@ def db_operation(func):
             result = await func(*args, **kwargs)
             duration = (datetime.now() - start_time).total_seconds()
             if duration > 1.0:  # Log slow operations
-                logger.warning(
-                    f"Slow DB operation: {func.__name__} took {duration:.2f}s"
-                )
+                logger.warning(f"Slow DB operation: {func.__name__} took {duration:.2f}s")
             return result
         except SQLAlchemyError as e:
             logger.error(f"Database operation {func.__name__} failed: {str(e)}")
@@ -461,9 +461,7 @@ class PlanaDBModel(PlanaDB.base):
 
         # Handle dictionaries recursively
         if isinstance(value, dict):
-            return {
-                k: self._serialize_value(v, convert_big_int) for k, v in value.items()
-            }
+            return {k: self._serialize_value(v, convert_big_int) for k, v in value.items()}
 
         # Handle lists recursively
         if isinstance(value, (list, tuple)):
